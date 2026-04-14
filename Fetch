@@ -1,0 +1,22 @@
+
+const url = 'https://www.googleapis.com/books/v1/volumes?q=javascript';
+
+fetch(url)
+  .then(response => {
+    if (!response.ok) throw new Error('Error en la red');
+    return response.json();
+  })
+  .then(data => {
+    // Google Books devuelve los objetos dentro de una propiedad llamada 'items'
+    console.log("Total de resultados:", data.totalItems);
+    
+    // Mostramos la lista de libros en una tabla limpia
+    const libros = data.items.map(libro => ({
+      Título: libro.volumeInfo.title,
+      Autores: libro.volumeInfo.authors?.join(', '),
+      Publicado: libro.volumeInfo.publishedDate
+    }));
+    
+    console.table(libros);
+  })
+  .catch(err => console.error('Hubo un problema:', err));
